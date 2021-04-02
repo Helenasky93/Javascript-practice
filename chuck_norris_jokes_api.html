@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        async function getCategoryButtons() {
+            // e.preventDefault();
+            // document.querySelector(".joke").innerHTML = "Loading";
+            try {
+                let json = await fetch("https://api.chucknorris.io/jokes/categories").then(res => res.json())
+                // let json = await response.json()
+                json.forEach(cat => {
+                    
+                    document.querySelector(".categories").innerHTML += `<button class="${cat}" onClick="getJoke('${cat}')">${cat}</button>`
+                });
+            } catch (error) {
+                document.querySelector(".categories").innerHTML = "Something went wrong.."
+            }
+            // console.log(json)
+            // .then(res => {
+            //         return res.json()
+            //     })
+            //     .then(res => {
+            //         document.querySelector(".joke").innerHTML = res.value;
+            //         return 'hi'
+            //     })
+            //     .catch(err => {
+            //         document.querySelector(".joke").innerHTML = "Something went wrong.."
+            //     })
+        }
+        async function getJoke(cat) {
+            try {
+                let json = await fetch(`https://api.chucknorris.io/jokes/random?category=${cat}`).then(res => res.json());
+                document.querySelector(".jokes").innerHTML = json.value
+            } catch(error) {
+                document.querySelector(".jokes").innerHTML = "something went wrong"
+            }
+        }
+        getCategoryButtons();
+    </script>
+</head>
+<body>
+    <h1>here are some Chuck Norris jokes for ya</h1>
+    <button class="jokeButton" onclick="getJoke()">Make a joke!</button>
+    <div class="categories">
+    </div>
+    <div class="jokes"></div>
+</body>
+</html>
